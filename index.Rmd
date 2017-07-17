@@ -1,0 +1,90 @@
+---
+title: "DSS09_Week_2"
+author: "Bram van Dam"
+date: "July 17, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r General, echo = FALSE, message = FALSE, warning = FALSE}
+# Install required packages if necessary
+ReqPack <- c( "tidyr", "dplyr", "ggplot2", "shiny", "plotly", "leaflet")
+for(p in ReqPack){
+    if(!require(p,character.only = TRUE)) {
+        message(paste(p,"was nog niet ge?nstalleerd!"))
+        install.packages(p)
+    }
+    library(p,character.only = TRUE)
+}
+
+# clean "Environment"
+rm(list = ls())
+cat("\014")
+
+```
+## Introduction
+
+This is a small html file created with R Markdwown and the leaflet package for the assignment for week 2 of the Developing Data Products course. This course is part of the Data Science Specialization on Coursera.org (https://www.coursera.org/specializations/jhu-data-science/).
+
+
+## Our holiday
+
+This year my wife and I went for a walk along the West Highland Way, in Scotland. We started somewhere in the middle (Tyndrum) and walked to Fort William. During our stay in Fort William, we climbed Ben Nevis, the highest moutain in Great Britain.
+
+From the walk, I recorded the GPS track and this track is shown in the map below.
+
+```{r ShowMap, echo = FALSE, message = FALSE, warning = FALSE}
+
+library(leaflet)
+library(rgdal)
+
+# read .gpx info
+WHW_tracks <- readOGR("./Data/201706_Scotland_WHW.gpx", verbose = FALSE, layer = "tracks")
+WHW_waypoints <- readOGR("./Data/201706_Scotland_WHW.gpx", verbose = FALSE, layer = "waypoints")
+# Combine some info for links
+WHW_waypoints$link_popup <- paste("<a href='", WHW_waypoints$link1_href,
+                                  "'>", WHW_waypoints$cmt, "</a>", sep = "")
+
+# Create icons from pictures, make it a list for future referencing by name
+iconSize = 24
+BmapIcons <- iconList(
+    "Ben Nevis" = makeIcon("./Data/Ben nevis.png", 
+                           "./Data/Ben nevis.png", iconSize, iconSize),
+    "Berkeley Guest House" = makeIcon("./Data/Berkeley Guest House.png",
+                                      "./Data/Berkeley Guest House.png", iconSize, iconSize),
+    "Heatherlea B&B" = makeIcon("./Data/Heatherlea B&B.png", 
+                                "./Data/Heatherlea B&B.png", iconSize, iconSize),
+    "Hermon B&B" = makeIcon("./Data/Hermon B&B.png",
+                            "./Data/Hermon B&B.png", iconSize, iconSize),
+    "Kingshouse Hotel" = makeIcon("./Data/Kingshouse Hotel.png",
+                                  "./Data/Kingshouse Hotel.png", iconSize, iconSize),
+    "Tyndrum Inn" = makeIcon("./Data/Tyndrum Inn.png",
+                             "./Data/Tyndrum Inn.png", iconSize, iconSize)
+)
+
+Bmap <- leaflet() %>%
+    addTiles() %>%
+    setView(-5, 56.62, 10) %>% # map location
+    addPolylines(data = WHW_tracks, color = "red", weight = 4) %>%
+    addMarkers(data = WHW_waypoints,
+               icon = ~BmapIcons[WHW_waypoints$name],
+               popup = WHW_waypoints$link_popup)
+
+Bmap
+
+```
+  
+We slept in a bed & breakfast or guesthouse. These places are marked with icons created from pictures of the locations. Also, a link to the site of the bed & breakfast can be used to go to the site (if applicable). No site from Kingshouse Hotel is created, since we didn't stay there (it was being refurbished at that time).
+
+Some parts we travelled by bus. These tracks are not shown in the map.
+
+## Appendix: code
+
+Below the code is shown, so one can see this page is made with R and the leaflet package.
+
+```{r code, eval = FALSE, ref.label = 'ShowMap'}
+
+```
