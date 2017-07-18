@@ -1,8 +1,10 @@
 ---
-title: "DSS09_Week_2"
+title: "West Highland Way"
 author: "Bram van Dam"
 date: "July 17, 2017"
-output: html_document
+output: 
+  html_document: 
+    keep_md: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -25,6 +27,7 @@ rm(list = ls())
 cat("\014")
 
 ```
+  
 ## Introduction
 
 This is a small html file created with R Markdwown and the leaflet package for the assignment for week 2 of the Developing Data Products course. This course is part of the Data Science Specialization on Coursera.org (https://www.coursera.org/specializations/jhu-data-science/).
@@ -45,8 +48,8 @@ library(rgdal)
 WHW_tracks <- readOGR("./Data/201706_Scotland_WHW.gpx", verbose = FALSE, layer = "tracks")
 WHW_waypoints <- readOGR("./Data/201706_Scotland_WHW.gpx", verbose = FALSE, layer = "waypoints")
 # Combine some info for links
-WHW_waypoints$link_popup <- paste("<a href='", WHW_waypoints$link1_href,
-                                  "'>", WHW_waypoints$cmt, "</a>", sep = "")
+WHW_waypoints$link_popup <- paste("<a href=\"", WHW_waypoints$link1_href,
+                                  "\">", WHW_waypoints$cmt, "</a>", sep = "")
 
 # Create icons from pictures, make it a list for future referencing by name
 iconSize = 24
@@ -67,7 +70,7 @@ BmapIcons <- iconList(
 
 Bmap <- leaflet() %>%
     addTiles() %>%
-    setView(-5, 56.62, 10) %>% # map location
+    setView(lng = -5, lat = 56.62, zoom = 9) %>% # map location
     addPolylines(data = WHW_tracks, color = "red", weight = 4) %>%
     addMarkers(data = WHW_waypoints,
                icon = ~BmapIcons[WHW_waypoints$name],
