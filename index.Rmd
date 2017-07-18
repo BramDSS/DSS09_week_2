@@ -39,7 +39,7 @@ This year my wife and I went for a walk along the West Highland Way, in Scotland
 
 From the walk, I recorded the GPS track and this track is shown in the map below.
 
-```{r ShowMap, echo = FALSE, message = FALSE, warning = FALSE}
+```{r ShowMap, echo = FALSE, message = FALSE, warning = FALSE, results = "asis", fig.width = 8, fig.height = 8}
 
 library(leaflet)
 library(rgdal)
@@ -48,10 +48,12 @@ library(rgdal)
 WHW_tracks <- readOGR("./Data/201706_Scotland_WHW.gpx", verbose = FALSE, layer = "tracks")
 WHW_waypoints <- readOGR("./Data/201706_Scotland_WHW.gpx", verbose = FALSE, layer = "waypoints")
 # Combine some info for links
-WHW_waypoints$link_popup <- paste("<a href=\"", WHW_waypoints$link1_href,
-                                  "\">", WHW_waypoints$cmt, "</a>", sep = "")
+link_popup <- paste("<a href=\"", WHW_waypoints$link1_href,
+                    "\">", WHW_waypoints$cmt, "</a>", sep = "")
+# Correct if link1_href is NA
+link_popup[is.na(WHW_waypoints$link1_href)] <- as.character(WHW_waypoints$cmt[is.na(WHW_waypoints$link1_href)])
 
-# Create icons from pictures, make it a list for future referencing by name
+    # Create icons from pictures, make it a list for future referencing by name
 iconSize = 24
 BmapIcons <- iconList(
     "Ben Nevis" = makeIcon("./Data/Ben nevis.png", 
@@ -70,17 +72,19 @@ BmapIcons <- iconList(
 
 Bmap <- leaflet() %>%
     addTiles() %>%
-    setView(lng = -5, lat = 56.62, zoom = 9) %>% # map location
+    setView(lng = -5, lat = 56.62, zoom = 10) %>% # map location
     addPolylines(data = WHW_tracks, color = "red", weight = 4) %>%
     addMarkers(data = WHW_waypoints,
                icon = ~BmapIcons[WHW_waypoints$name],
-               popup = WHW_waypoints$link_popup)
+               popup = link_popup)
 
 Bmap
 
 ```
   
-We slept in a bed & breakfast or guesthouse. These places are marked with icons created from pictures of the locations. Also, a link to the site of the bed & breakfast can be used to go to the site (if applicable). No site from Kingshouse Hotel is created, since we didn't stay there (it was being refurbished at that time).
+<br style="margin-bottom:240px;"/>
+
+We slept in a bed & breakfast or guesthouse. These places are marked with icons created from pictures of the locations. Also, a link to the site of the bed & breakfast can be used to go to the site (if applicable). No link to the site from Kingshouse Hotel is created, since we didn't stay there (it was being refurbished at that time).
 
 Some parts we travelled by bus. These tracks are not shown in the map.
 

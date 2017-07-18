@@ -5,7 +5,7 @@
     <link href="http://www.garmin.com">
       <text>Garmin International</text>
     </link>
-    <time>2017-07-18T18:24:10Z</time>
+    <time>2017-07-18T18:55:41Z</time>
     <bounds maxlat="56.832517040893435" maxlon="-4.71178762614727" minlat="56.437520692124963" minlon="-5.114097017794848"/>
   </metadata>
 
@@ -15,7 +15,7 @@
     <name>Ben Nevis</name>
     <cmt>Ben Nevis</cmt>
     <desc>Ben Nevis</desc>
-    <link href="https://en.wikipedia.org/wiki/Ben_Nevis/"/>
+    <link href="https://en.wikipedia.org/wiki/Ben_Nevis"/>
     <sym>Summit</sym>
     <extensions>
       <gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
