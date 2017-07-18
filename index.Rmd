@@ -81,9 +81,7 @@ Bmap <- leaflet() %>%
 Bmap
 
 ```
-  
-<br style="margin-bottom:240px;"/>
-
+<br style="margin-bottom:24px;"/>
 We slept in a bed & breakfast or guesthouse. These places are marked with icons created from pictures of the locations. Also, a link to the site of the bed & breakfast can be used to go to the site (if applicable). No link to the site from Kingshouse Hotel is created, since we didn't stay there (it was being refurbished at that time).
 
 Some parts we travelled by bus. These tracks are not shown in the map.
